@@ -1,7 +1,6 @@
-import { Environment, useGLTF } from '@react-three/drei';
+import { Environment, Text, useGLTF } from '@react-three/drei';
 import { Canvas, PrimitiveProps, useFrame } from '@react-three/fiber';
 import { useScroll, useSpring, useTransform } from 'framer-motion';
-import { useControls } from 'leva';
 import { useRef } from 'react';
 import './App.css';
 
@@ -41,29 +40,12 @@ function Model({
 
 function App() {
   const container = useRef(null);
-  const { scene } = useGLTF('./model.gltf');
-
-  const {
-    scale: scaleControl,
-    rotationX: rotationXControl,
-    rotationY: rotationYControl,
-    rotationZ: rotationZControl,
-    ...position
-  } = useControls({
-    x: { value: -20, min: -100, max: 100 },
-    y: { value: 15, min: -100, max: 100 },
-    z: { value: 0, min: -100, max: 100 },
-    scale: { value: 1, min: 0, max: 2 },
-    rotationX: { value: 0, min: -Math.PI, max: Math.PI },
-    rotationY: { value: 0, min: -Math.PI, max: Math.PI },
-    rotationZ: { value: 0, min: -Math.PI, max: Math.PI },
-  });
   const { scrollYProgress } = useScroll({
     target: container,
     offset: ['start start', 'end end'],
   });
 
-  const x = useTransform(scrollYProgress, [0, 0.5, 1], [-20, 20, -16]);
+  const x = useTransform(scrollYProgress, [0, 0.5, 1], [-20, 40, -16]);
   const y = useTransform(scrollYProgress, [0, 0.5, 1], [15, -15, -31]);
   const z = useTransform(scrollYProgress, [0, 0.5, 1], [0, 0, 4]);
   const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.5, 1.5, 1.8]);
@@ -85,29 +67,26 @@ function App() {
 
   return (
     <main ref={container}>
-      <header>
-        <h1>Tree</h1>
-      </header>
       <div id="canvas-container">
         <Canvas camera={{ position: [-10, 10, 70], fov: 50 }}>
           <Environment preset="apartment" />
           <directionalLight intensity={2} position={[0, 2, 3]} />
           <ambientLight />
-          {/* <primitive
-            object={scene}
-            position={[position.x, position.y, position.z]}
-            scale={scaleControl}
-            rotation={[rotationXControl, rotationYControl, rotationZControl]}
-          /> */}
-          {/* <Model
-            x={x}
-            y={y}
-            z={z}
-            scale={scale}
-            rotationX={rotationX}
-            rotationY={rotationY}
-            rotationZ={rotationZ}
-          /> */}
+          <group>
+            <mesh position={[0, 0, -0.1]}>
+              <boxGeometry args={[30, 15, 0]} />
+              <meshBasicMaterial color="#95D2B3" />
+            </mesh>
+            <Text
+              fontSize={8}
+              fontWeight={700}
+              color="#55AD9B"
+              anchorX="center"
+              anchorY="middle"
+            >
+              Tree
+            </Text>
+          </group>
           <Model
             x={xSpring}
             y={ySpring}
@@ -117,7 +96,6 @@ function App() {
             rotationY={rotationYSpring}
             rotationZ={rotationZSpring}
           />
-          <axesHelper args={[8]} />
         </Canvas>
       </div>
     </main>

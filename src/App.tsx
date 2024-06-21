@@ -45,10 +45,14 @@ function App() {
     offset: ['start start', 'end end'],
   });
 
-  const x = useTransform(scrollYProgress, [0, 0.5, 1], [-20, 40, -16]);
-  const y = useTransform(scrollYProgress, [0, 0.5, 1], [15, -15, -31]);
-  const z = useTransform(scrollYProgress, [0, 0.5, 1], [0, 0, 4]);
-  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.5, 1.5, 1.8]);
+  const x = useTransform(scrollYProgress, [0, 0.4, 0.8, 1], [-20, 40, -16, 20]);
+  const y = useTransform(scrollYProgress, [0, 0.4, 0.8, 1], [15, -15, -31, 15]);
+  const z = useTransform(scrollYProgress, [0, 0.4, 0.8, 1], [0, 0, 4, 0]);
+  const scale = useTransform(
+    scrollYProgress,
+    [0, 0.4, 0.8, 1],
+    [0.5, 1.5, 1.8, 1.3]
+  );
   const rotationX = useTransform(scrollYProgress, [0, 1], [0, -0.5]);
   const rotationY = useTransform(
     scrollYProgress,
